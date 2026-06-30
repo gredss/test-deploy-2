@@ -1,0 +1,53 @@
+# Auto-generated BuildConfig by Bob
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: dashboard-pipeline
+  namespace: production
+  labels:
+    app: dashboard
+    generated-by: bob
+spec:
+  strategy:
+    type: JenkinsPipeline
+    jenkinsPipelineStrategy:
+      jenkinsfilePath: Jenkinsfile
+  source:
+    type: Git
+    git:
+      uri: https://github.com/gredss/test-deploy-2.git
+      ref: main
+  triggers:
+    - type: ConfigChange
+    - type: GitHub
+      github:
+        secret: bob-webhook-secret
+
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: dashboard
+  namespace: production
+  labels:
+    app: dashboard
+    generated-by: bob
+spec:
+  output:
+    to:
+      kind: DockerImage
+      name: docker.io/gresesther/dashboard:latest
+    pushSecret:
+      name: dockerhub-secret
+  source:
+    type: Git
+    git:
+      uri: https://github.com/gredss/test-deploy-2.git
+      ref: main
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+  triggers:
+    - type: ConfigChange
