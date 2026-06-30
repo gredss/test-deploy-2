@@ -1,0 +1,19 @@
+# Auto-generated Service by Bob
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard
+  namespace: production
+  labels:
+    app: dashboard
+    generated-by: bob
+spec:
+  type: ClusterIP
+  ports:
+  - port: 5000
+    targetPort: 5000
+    protocol: TCP
+    name: http
+  selector:
+    app: dashboard
+  sessionAffinity: None
